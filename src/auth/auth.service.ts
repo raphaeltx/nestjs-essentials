@@ -29,7 +29,7 @@ export class AuthService {
 
       return { accessToken };
     } else {
-      throw new UnauthorizedException('Please check your login credentials');
+      throw new UnauthorizedException('Please check your login credentials.');
     }
   }
 }
