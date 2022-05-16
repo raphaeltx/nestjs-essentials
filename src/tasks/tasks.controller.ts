@@ -11,6 +11,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -19,6 +26,7 @@ import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 
+@ApiTags('Tasks')
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
@@ -26,6 +34,10 @@ export class TasksController {
 
   constructor(private tasksService: TasksService) {}
 
+  @ApiOperation({
+    summary: 'Tasks',
+    description: 'Lista tasks por usuário.',
+  })
   @Get()
   getTasks(
     @Query() filterDto: GetTasksFilterDto,
@@ -39,11 +51,27 @@ export class TasksController {
     return this.tasksService.getTasks(filterDto, user);
   }
 
+  @ApiOperation({
+    summary: 'Search task',
+    description: 'Busca task por id.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id da task.',
+  })
   @Get('/:id')
   getTaskById(@Param('id') id: string, @GetUser() user: User): Promise<Task> {
     return this.tasksService.getTaskById(id, user);
   }
 
+  @ApiOperation({
+    summary: 'New task',
+    description: 'Cria task.',
+  })
+  @ApiBody({
+    type: CreateTaskDto,
+    required: true,
+  })
   @Post()
   createTask(
     @Body() createTaskDto: CreateTaskDto,
@@ -58,11 +86,31 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto, user);
   }
 
+  @ApiOperation({
+    summary: 'Delete task',
+    description: 'Remove uma task por id.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id da task.',
+  })
   @Delete('/:id')
   deleteTask(@Param('id') id: string, @GetUser() user: User): Promise<void> {
     return this.tasksService.deleteTask(id, user);
   }
 
+  @ApiOperation({
+    summary: 'Update task status',
+    description: 'Atualiza status da task por id.',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id da task.',
+  })
+  @ApiBody({
+    type: UpdateTaskStatusDto,
+    required: true,
+  })
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
