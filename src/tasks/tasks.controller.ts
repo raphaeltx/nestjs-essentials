@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
+  ApiBearerAuth,
   ApiBody,
   ApiOperation,
   ApiParam,
@@ -34,6 +35,7 @@ export class TasksController {
 
   constructor(private tasksService: TasksService) {}
 
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Tasks',
     description: 'Lista tasks por usuário.',
@@ -51,6 +53,7 @@ export class TasksController {
     return this.tasksService.getTasks(filterDto, user);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Search task',
     description: 'Busca task por id.',
@@ -64,6 +67,7 @@ export class TasksController {
     return this.tasksService.getTaskById(id, user);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'New task',
     description: 'Cria task.',
@@ -86,6 +90,7 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto, user);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Delete task',
     description: 'Remove uma task por id.',
@@ -99,6 +104,7 @@ export class TasksController {
     return this.tasksService.deleteTask(id, user);
   }
 
+  @ApiBearerAuth()
   @ApiOperation({
     summary: 'Update task status',
     description: 'Atualiza status da task por id.',
