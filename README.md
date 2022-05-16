@@ -71,3 +71,11 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+## Heroku deployment
+create postgres database: heroku addons: create heroku-postgresql:hobby-dev -a <app-name>
+heroku git bash: heroku git:remote <app-name>
+heroku set env variables: heroku config:set NAME_VAR=VALUE_VAR
+heroku deploy: git push -f heroku HEAD:<branch-name>
+heroku logs: heroku logs --tail
+
